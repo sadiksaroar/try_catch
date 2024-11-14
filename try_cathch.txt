@@ -1,0 +1,96 @@
+Flutter Dart এ try-catch ব্লকের বাংলা ব্যাখ্যা
+try-catch ব্লক ব্যবহার করা হয় কোডের এমন অংশগুলিকে নিয়ন্ত্রণ করার জন্য, যেখানে কোনো ধরনের ভুল বা এক্সেপশন (exception) ঘটতে পারে। এটি আমাদের অ্যাপ্লিকেশনকে ক্র্যাশ হওয়া থেকে রক্ষা করে এবং ইউজারদের আরও ভাল অভিজ্ঞতা দেয়।
+
+try-catch ব্লকের গঠন (Syntax)
+dart
+Copy code
+try {
+  // এখানে এমন কোড থাকবে যেটাতে এক্সেপশন ঘটতে পারে
+} catch (e) {
+  // এক্সেপশন হলে এই ব্লকটি চলবে
+}
+উদাহরণ ১: সাধারণ try-catch ব্যবহারের উদাহরণ
+dart
+Copy code
+void main() {
+  try {
+    int result = 10 ~/ 0; // এখানে 0 দিয়ে ভাগ করার চেষ্টা করা হচ্ছে
+    print(result);
+  } catch (e) {
+    print('Error: $e');
+  }
+}
+আউটপুট:
+
+javascript
+Copy code
+Error: IntegerDivisionByZeroException
+ব্যাখ্যা:
+
+এখানে 10 ~/ 0 করার সময় IntegerDivisionByZeroException ঘটেছে।
+try ব্লকের কোডে কোনো সমস্যা হলে, catch ব্লকটি চলবে এবং এর ভিতরের কোড এক্সিকিউট হবে।
+catch ব্লকের ভিন্ন ফর্ম্যাট
+কখনো কখনো আপনি catch ব্লকে StackTrace এর ডিটেইলসও পেতে পারেন।
+
+dart
+Copy code
+try {
+  int result = 10 ~/ 0;
+  print(result);
+} catch (e, stacktrace) {
+  print('Error: $e');
+  print('Stack Trace: $stacktrace');
+}
+উদাহরণ ২: try-catch-finally ব্যবহারের উদাহরণ
+finally ব্লকটি সবসময় চলবে, চাইলেই হোক বা এক্সেপশন হোক।
+
+dart
+Copy code
+void main() {
+  try {
+    int result = 10 ~/ 2;
+    print('Result: $result');
+  } catch (e) {
+    print('Error: $e');
+  } finally {
+    print('এই ব্লকটি সবসময় এক্সিকিউট হবে');
+  }
+}
+আউটপুট:
+
+makefile
+Copy code
+Result: 5
+এই ব্লকটি সবসময় এক্সিকিউট হবে
+try-catch এর ব্যবহার কবে করবেন?
+HTTP API Call: যখন আপনি কোনো API থেকে ডাটা নিয়ে আসছেন।
+File Operations: যখন আপনি ফাইল পড়ছেন বা লিখছেন।
+Parsing: যখন আপনি String থেকে int বা অন্য কোনো টাইপে কনভার্ট করছেন।
+Database Query: ডাটাবেস থেকে ডাটা এক্সেস করার সময়।
+উদাহরণ ৩: HTTP API Call এর ক্ষেত্রে
+dart
+Copy code
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
+void fetchData() async {
+  try {
+    final response = await http.get(Uri.parse('https://jsonplaceholder.typicode.com/posts/1'));
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+      print('Data: $data');
+    } else {
+      print('Failed to load data');
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
+}
+
+void main() {
+  fetchData();
+}
+উপসংহার
+try-catch ব্যবহার করে আপনি আপনার অ্যাপ্লিকেশনকে সম্ভাব্য এক্সেপশন থেকে রক্ষা করতে পারেন।
+এটি অ্যাপ্লিকেশন ক্র্যাশ রোধ করতে সহায়ক এবং ইউজারদের একটি ভাল এক্সপিরিয়েন্স দেয়।
+মনোযোগ দিন: try-catch ব্লক খুব ভারী কোডে ব্যবহার করবেন না। শুধুমাত্র সেইসব ক্ষেত্রে ব্যবহার করুন যেখানে এক্সেপশন ঘটতে পারে।
